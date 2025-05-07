@@ -362,12 +362,11 @@ class OrderedSet(MutableSet[T], Sequence[T]):
             >>> oset | {10}
             OrderedSet([3, 1, 4, 5, 2, 0, 10])
         """
-        cls: type = OrderedSet
-        if isinstance(self, OrderedSet):
-            cls = self.__class__
-        containers = map(list, it.chain([self], sets))
-        items = it.chain.from_iterable(containers)
-        return cls(items)
+        result = OrderedSet(self)
+        for s in sets:
+            for item in s:
+                result.add(item)
+        return result
 
     def __and__(self, other: SetLike[T]) -> "OrderedSet[T]":
         # the parent implementation of this is backwards
